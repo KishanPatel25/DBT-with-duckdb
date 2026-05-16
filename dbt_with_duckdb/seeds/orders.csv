@@ -1,0 +1,6 @@
+order_id,customer_id,order_date,amount,status
+101,1,2023-06-01,150.50,completed
+102,2,2023-06-05,200.00,completed
+103,1,2023-06-10,75.25,pending
+104,3,2023-06-12,300.00,completed
+105,4,2023-06-15,125.75,cancelled

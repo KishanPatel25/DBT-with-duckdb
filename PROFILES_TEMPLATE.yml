@@ -1,0 +1,59 @@
+# profiles.yml template for multi-target setup
+# Location: ~/.dbt/profiles.yml
+# Copy this and fill in your credentials
+
+dbt_with_duckdb:
+  outputs:
+    # ========== LOCAL DEVELOPMENT ==========
+    dev:
+      type: duckdb
+      path: dev.duckdb
+      threads: 1
+      # S3 credentials (optional, for reading from S3)
+      s3_region: '{{ env_var("AWS_REGION", "us-east-1") }}'
+      s3_access_key_id: '{{ env_var("AWS_ACCESS_KEY_ID", "") }}'
+      s3_secret_access_key: '{{ env_var("AWS_SECRET_ACCESS_KEY", "") }}'
+
+    # ========== FABRIC WAREHOUSE ==========
+    fabric:
+      type: fabric
+      driver: 'ODBC Driver 17 for SQL Server'
+      server: '{{ env_var("FABRIC_SERVER") }}'  # e.g., workspace-xyz.pbix.fabric.powerbi.com
+      database: '{{ env_var("FABRIC_DATABASE") }}'  # e.g., my_lakehouse
+      schema: dbo
+      port: 1433
+      username: '{{ env_var("FABRIC_USER") }}'  # your-email@company.com
+      password: '{{ env_var("FABRIC_PASSWORD") }}'
+      threads: 4
+      # Optional: connection pooling
+      # connection_timeout: 0
+      # login_timeout: 0
+
+    # ========== DATABRICKS WAREHOUSE ==========
+    databricks:
+      type: databricks
+      catalog: 'main'  # or your Unity Catalog name
+      schema: 'dbt_learning'
+      host: '{{ env_var("DATABRICKS_HOST") }}'  # e.g., dbc-4c14ed83-f881.cloud.databricks.com
+      http_path: '{{ env_var("DATABRICKS_HTTP_PATH") }}'  # e.g., /sql/1.0/warehouses/abc123
+      token: '{{ env_var("DATABRICKS_TOKEN") }}'
+      threads: 4
+      timeout_seconds: 300
+
+  target: dev  # Default target. Override with: dbt run --target fabric
+
+# ========== ENVIRONMENT VARIABLES TO SET ==========
+#
+# PowerShell example:
+# $env:AWS_REGION = "us-east-1"
+# $env:AWS_ACCESS_KEY_ID = "your-key"
+# $env:AWS_SECRET_ACCESS_KEY = "your-secret"
+# $env:FABRIC_SERVER = "workspace-xyz.pbix.fabric.powerbi.com"
+# $env:FABRIC_DATABASE = "my_lakehouse"
+# $env:FABRIC_USER = "your-email@company.com"
+# $env:FABRIC_PASSWORD = "your-password"
+# $env:DATABRICKS_HOST = "dbc-abc.cloud.databricks.com"
+# $env:DATABRICKS_HTTP_PATH = "/sql/1.0/warehouses/xyz"
+# $env:DATABRICKS_TOKEN = "dapixyzabc123"
+#
+# Or create a .env file and load it (see S3_FABRIC_DATABRICKS_SETUP.md)

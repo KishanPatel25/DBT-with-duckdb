@@ -1,0 +1,34 @@
+version: 2
+
+sources:
+  - name: raw_data
+    description: Raw data sources (seeds for learning, will add S3 parquet later)
+    database: memory
+    tables:
+      - name: customers
+        description: Customer master data (currently a seed)
+        columns:
+          - name: customer_id
+            description: Unique customer identifier
+          - name: customer_name
+            description: Customer full name
+
+      - name: orders
+        description: Customer orders (currently a seed)
+        columns:
+          - name: order_id
+            description: Unique order identifier
+          - name: customer_id
+            description: Foreign key to customer
+          - name: amount
+            description: Order amount in USD
+
+  # Example S3 source configuration (uncomment when ready):
+  # - name: s3_data
+  #   description: Data from S3 bucket
+  #   database: memory
+  #   schema: s3_parquet
+  #   tables:
+  #     - name: product_data
+  #       description: Products from S3 parquet
+  #       external_location: s3://your-bucket/product_data/

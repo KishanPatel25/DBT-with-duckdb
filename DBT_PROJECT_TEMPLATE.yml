@@ -1,0 +1,141 @@
+name: 'dbt_with_duckdb'
+version: '1.0.0'
+config-version: 2
+
+# Profile matching the one in profiles.yml
+profile: 'dbt_with_duckdb'
+
+# Directory paths
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+# ========== MODEL CONFIGURATION ==========
+
+models:
+  dbt_with_duckdb:
+    # Default: all models are views
+    +materialized: view
+    +schema: analytics
+
+    # Staging models (ELT layer - transformations on raw data)
+    staging:
+      +materialized: view
+      +tags: ['staging']
+      +schema: staging
+      # Staging models can read from any source
+      # Example: stg_products_from_s3, stg_sales_from_databricks
+
+    # Intermediate models (business logic)
+    intermediate:
+      +materialized: table
+      +tags: ['intermediate']
+      +schema: intermediate
+
+    # Fact & dimension tables (final layer)
+    marts:
+      +materialized: table
+      +tags: ['marts', 'core']
+      +schema: analytics
+
+# ========== SEED CONFIGURATION ==========
+
+seeds:
+  dbt_with_duckdb:
+    # Seeds are loaded as tables
+    +schema: staging
+    +quote_columns: false
+    # CSV configs
+    quote_all: false
+
+# ========== TARGET-SPECIFIC CONFIGURATIONS ==========
+# Uncomment and customize as needed
+
+# DuckDB (dev target) - views for fast iteration
+# - No special config needed; defaults above apply
+
+# Fabric (fabric target) - tables for analytics
+# - All models in `marts` become tables
+# - Schema targets `analytics` schema in Fabric
+
+# Databricks (databricks target) - tables in Unity Catalog
+# - Models become tables in main.dbt_learning
+# - Can reference other tables in Databricks
+# - Add Databricks-specific config:
+#
+# models:
+#   dbt_with_duckdb:
+#     +database: 'main'        # Explicitly set catalog
+#     marts:
+#       +schema: 'dbt_learning'
+
+# ========== VARIABLE CONFIGURATION ==========
+# Define dbt variables (used in models with {{ var('key') }})
+
+vars:
+  # Start date for incremental models
+  start_date: '2023-01-01'
+
+  # Environment-specific flags
+  is_dev: "{{ target.name == 'dev' }}"
+  is_fabric: "{{ target.name == 'fabric' }}"
+  is_databricks: "{{ target.name == 'databricks' }}"
+
+# ========== TESTING & DOCUMENTATION ==========
+
+require-dbt-version: [">=1.0.0", "<2.0.0"]
+
+# Test configs
+tests:
+  dbt_with_duckdb:
+    +schema: test_results
+    # Fail on warnings
+    # +fail_calc: sum
+
+# Macro definitions
+# macros:
+#   my_macro:
+#     docs_version: 2
+
+# ========== PACKAGE CONFIGURATION ==========
+# For future: add dbt packages if needed
+# packages:
+#   - package: dbt-labs/dbt_utils
+#     version: 0.9.2
+
+# ========== ON-RUN-START / ON-RUN-END HOOKS ==========
+# Run SQL before/after dbt invocation
+
+on-run-start:
+  - "{{ log('Starting dbt run on target: ' ~ target.name, info=true) }}"
+
+on-run-end:
+  - "{{ log('Completed dbt run on target: ' ~ target.name, info=true) }}"
+
+# ========== USAGE EXAMPLES ==========
+#
+# Run all models on DuckDB (default):
+#   dbt run
+#
+# Run all models on Fabric:
+#   dbt run --target fabric
+#
+# Run all models on Databricks:
+#   dbt run --target databricks
+#
+# Run only staging models:
+#   dbt run --select tag:staging
+#
+# Run only marts and test them:
+#   dbt run --select tag:marts && dbt test --select tag:marts
+#
+# Run with vars:
+#   dbt run --vars '{"start_date": "2024-01-01"}'

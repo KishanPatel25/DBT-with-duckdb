@@ -2,3 +2,13 @@
 target/
 dbt_packages/
 logs/
+
+# DuckDB database files
+*.duckdb
+*.duckdb.wal
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
