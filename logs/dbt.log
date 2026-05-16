@@ -1,0 +1,28 @@
+[0m09:30:00.454098 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000022032008AA0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000022034F7D1C0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000022034F7EF30>]}
+
+
+============================== 09:30:00.502433 | c4141ef9-9a8c-449a-bf26-1c2653e4169c ==============================
+[0m09:30:00.502433 [info ] [MainThread]: Running with dbt=1.11.10
+[0m09:30:00.503433 [debug] [MainThread]: running dbt with arguments {'static_parser': 'True', 'no_print': 'None', 'version_check': 'True', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'target_path': 'None', 'printer_width': '80', 'write_json': 'True', 'introspect': 'True', 'log_cache_events': 'False', 'empty': 'None', 'cache_selected_only': 'False', 'log_format': 'default', 'debug': 'False', 'fail_fast': 'False', 'profiles_dir': 'C:\\Users\\KishanPatel\\.dbt', 'send_anonymous_usage_stats': 'True', 'quiet': 'False', 'warn_error': 'None', 'partial_parse': 'True', 'use_colors': 'True', 'invocation_command': 'dbt init', 'indirect_selection': 'eager', 'use_experimental_parser': 'False', 'log_path': 'logs'}
+[0m09:30:22.560577 [debug] [MainThread]: Starter project path: C:\Users\KishanPatel\OneDrive - Acres Enterprises\Documents\Programming Projects\101_learn\dbt with duckdb\DBT-with-duckdb\.venv\Lib\site-packages\dbt\include\starter_project
+[0m09:30:22.605084 [info ] [MainThread]: 
+Your new dbt project "dbt_with_duckdb" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+[0m09:30:22.606082 [info ] [MainThread]: Setting up your profile.
+[0m09:30:27.152642 [debug] [MainThread]: Command `dbt init` succeeded at 09:30:27.152642 after 26.86 seconds
+[0m09:30:27.153661 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000022036827530>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000022036827080>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000022036827260>]}
+[0m09:30:27.153661 [debug] [MainThread]: Flushing usage events
+[0m09:30:27.424728 [debug] [MainThread]: An error was encountered while trying to flush usage events
